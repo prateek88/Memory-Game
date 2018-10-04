@@ -3,35 +3,62 @@
 <head>
   <title>Game On ...</title>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="css/basic_style.css" rel="stylesheet">
 </head>
 <body>
-
-<!-- Card matching game based on memory -->
-<h1>Card Matching game</h1>
-
-<!--  Star rating changes based on the moves taken to complete game-->
-<p class="star-rating"><p>
-
-<!--  A reset button to reset game at any time-->
-reset-button
-
-<!--  Number of moves -->
-<!-- A move is clicking on 2 cards in succession and cards are flipped over on click-->
-moves
-
-<!--  number of matches -->
-<!-- for each move, both card symbols are matched, if they match, it is counted as a match
-    else, no match-->
-matches
-
 <!--  A grid of 16 cards in 4x4 squares -->
 <!--  We need 8 images/symbols for 8 pairs -->
 <!--  Choose a theme for symbols -->
 <div class="grid">
   <!-- 4 cards -->
+  <div class="row">
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+  </div>
   <!-- 4 cards -->
+  <div class="row">
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+  </div>
   <!-- 4 cards -->
+  <div class="row">
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+  </div>
   <!-- 4 cards -->
+  <div class="row">
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+  </div>
+</div>
+
+
+<!-- Scores, rating and reset button -->
+<div class="sidebar">
+  <!--  Star rating changes based on the moves taken to complete game-->
+  <p class="star-rating">Star-rating</p>
+
+  <!--  Number of moves -->
+  <!-- A move is clicking on 2 cards in succession and cards are flipped over on
+  click-->
+  <p class="moves">Moves</p>
+
+  <!--  number of matches -->
+  <!-- for each move, both card symbols are matched, if they match, it is counted
+  as a match. Else, no match-->
+  <p class="matches">Matches</p>
+
+  <!--  A reset button to reset game at any time-->
+  <button class="reset-button">Reset</button>
 </div>
 
 <!-- HTMl for game end -->
