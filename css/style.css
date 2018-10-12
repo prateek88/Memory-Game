@@ -1,0 +1,105 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+
+}
+
+body {
+  background-color: #afabd8;
+}
+
+.container {
+  margin-top: 50px;
+}
+
+h1 {
+
+}
+
+section {
+
+}
+
+.data {
+  float: left;
+  height: auto;
+  width: 30%;
+  text-align: center;
+}
+
+.scores-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.moves {
+  padding-bottom: 30px;
+}
+
+.matches {
+  padding-bottom: 30px;
+}
+
+.star-rating {
+  padding-bottom: 30px;
+}
+
+p {
+
+}
+
+#reset-button {
+}
+
+.cards {
+  width: 500px;
+  min-height: 450px;
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  /*justify-content: space-between;*/
+  align-items: center;
+  /*margin: 0 auto;*/
+  background-color: #041486;
+}
+
+.card {
+  border: 1px solid black; /* need to remove */
+  width: 115px;
+  height: 115px;
+  background-color: #5775c1;
+  justify-content: center;
+  margin: 5px;
+  align-items: center;
+  display: flex;
+  font-size: 0;
+}
+
+/* If card is faced up, how to display that */
+.card.up {
+  transform: rotateY(0);
+  font-size: 3em;
+}
+
+/* If card if faced down how to show that */
+.card.down {
+  font-size: 0;
+}
+
+/* If card is a match, how to dispaly it */
+.card.match {
+  opacity: 0.2;
+}
+
+@media ( max-width: 750px) {
+  .data {
+    display: flex;
+    flex-direction: column;
+  }
+  .cards {
+    margin: 0 auto;
+  }
+}

@@ -1,71 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Game On ...</title>
+  <title>Game on ... card matching game</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="css/basic_style.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
 <body>
-<!--  A grid of 16 cards in 4x4 squares -->
-<!--  We need 8 images/symbols for 8 pairs -->
-<!--  Choose a theme for symbols -->
-<div class="grid">
-  <!-- 4 cards -->
-  <div class="row">
-    <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
+  <div class="container">
+    <section>
+      <div class="data">
+        <ul class="scores-list">
+          <li class="moves">Moves<p>0</p></li>
+          <li class="matches">Matches<p>0</p></li>
+          <li class="star-rating">
+            <!-- <i class="far fa-star"></i>  empty star -->
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </li>
+        </ul>
+        <button id="reset-button">Reset</button>
+      </div>
+          <ul class="cards">
+            <li class="card">
+              <i class="fas fa-apple-alt"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-ambulance"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-atom"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-air-freshener"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-apple-alt"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-anchor"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-bicycle"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-basketball-ball"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-brain"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-ambulance"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-atom"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-air-freshener"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-anchor"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-bicycle"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-basketball-ball"></i>
+            </li>
+            <li class="card">
+              <i class="fas fa-brain"></i>
+            </li>
+          </ul>
+    </section>
   </div>
-  <!-- 4 cards -->
-  <div class="row">
-    <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
-  </div>
-  <!-- 4 cards -->
-  <div class="row">
-    <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
-  </div>
-  <!-- 4 cards -->
-  <div class="row">
-    <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
-  </div>
-</div>
-
-
-<!-- Scores, rating and reset button -->
-<div class="sidebar">
-  <!--  Star rating changes based on the moves taken to complete game-->
-  <p class="star-rating">Star-rating</p>
-
-  <!--  Number of moves -->
-  <!-- A move is clicking on 2 cards in succession and cards are flipped over on
-  click-->
-  <p class="moves">Moves</p>
-
-  <!--  number of matches -->
-  <!-- for each move, both card symbols are matched, if they match, it is counted
-  as a match. Else, no match-->
-  <p class="matches">Matches</p>
-
-  <!--  A reset button to reset game at any time-->
-  <button class="reset-button">Reset</button>
-</div>
-
-<!-- HTMl for game end -->
-<!-- Greetings for finishing/winning the game -->
-<!-- Star Rating -->
-<!-- Total moves -->
-<!-- Restart game button -->
-
+  <script src="js/play_game.js"></script>
 </body>
 </html>
