@@ -133,12 +133,22 @@ p {
     cursor: pointer;
 }
 
-@media ( max-width: 750px) {
+@media screen and ( max-width: 750px ) {
   .data {
     display: flex;
     flex-direction: column;
   }
   .cards {
     margin: 0 auto;
+  }
+}
+
+@media screen and ( max-width: 530px ) {
+  .cards {
+    width: 450px;
+  }
+  .card {
+    width: 100px;
+    height: 100px;
   }
 }
