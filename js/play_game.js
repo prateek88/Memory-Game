@@ -17,6 +17,11 @@ let rating = 5;
 let cards;
 let reset_button;
 let modal;
+let seconds = 0;
+let timeTaken;
+let timerSet = 0;
+let timer;
+let scoresHtml;
 
 const STARS = 5;
 const emptyStarClass = "far";
@@ -64,7 +69,10 @@ function main() {
 // ####################### Functions ##########################################
 
 function game(evt) {
-
+  if (!timerSet) {
+    timerSet = 1;
+    timer = setInterval(myTimer, 1000); // triggers myTimer() every 1 second
+  }
   let card1 = evt.target;
   console.log(card1.nodeName);
   // https://davidwalsh.name/event-delegate
@@ -145,6 +153,8 @@ function game(evt) {
     // If all card are matched with their pair
     if ( matchedCards.length === 16 )
     {
+      timeTaken = seconds;
+      clearInterval(timer);
       // end the game and display greetings
       game_won();
     }
@@ -152,6 +162,10 @@ function game(evt) {
   else {
     console.log("same card is clicked again");
   }
+}
+
+function myTimer() {
+  seconds++;
 }
 
 function game_won() {
@@ -173,17 +187,24 @@ function game_won() {
 }
 
 function getScoresHtml() {
-  let scoresHtml = "";
-  scoresHtml += `<p>Moves: ${moves}</p><p>Matches: ${matches}</p><p>Rating: ${rating}`;
-  return scoresHtml;
+  let scores = "";
+  let ratingHtml = document.querySelector("li.star-rating").innerHTML;
+  scores += `<p class="remove">Moves: ${moves}</p><p class="remove">Matches: ${matches}</p><p class="remove">Rating:</p> ${ratingHtml} <p class="remove">Time Taken: ${timeTaken} Seconds</p>`;
+  return scores;
 }
 
 function playAgain(evt) {
   // hide modal
   modal.style.display = "none";
 
+  // remove HTML added to Modal
+  // let modal = document.querySelector(".modal-content");
+  // let modalScores = document.querySelectorAll(".remove");
+  // for (let i in modalScores){
+  //   modal.removeChild(modalScores[i]);
+  // }
   // Restart game
-  game_reset(evt);
+  game_reset();
 }
 
 function closeModal() {
@@ -191,14 +212,15 @@ function closeModal() {
   modal.style.display = "none";
 }
 
-function game_reset(evt){
+function game_reset(){
 
   // remove "match" class from matched cards to make them normal
   for ( let card of matchedCards )
   {
     card.classList.remove(matchClass);
   }
-
+  matchedCards = [];
+  openCards = [];
   // all cards down
   for ( let card of cards )
   {
@@ -215,6 +237,11 @@ function game_reset(evt){
   // reset ratings to 5 stars
   rating = 5;
   update_rating(rating);
+
+  // clear timer and reset seconds and timeTaken
+  clearInterval(timer);
+  seconds = 0;
+  timeTaken = 0;
 
   // add shuffled cards in new order
   // add event listener on all cards and reset button
