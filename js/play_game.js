@@ -1,16 +1,9 @@
 
-/* When user clicks on a card, it changes:
-1. State of card (flip up or flip down)
-2. moves count
-3. matches count (based on match)
-4. Star rating (increase or decrease, bsae don match)
-*/
-
 // ####################### Main Code ##########################################
 
 // global variables
-let openCards = [];
-let matchedCards = [];
+let openCards = []; // Any open card will be stored
+let matchedCards = []; // all matched cards
 let moves = 0;
 let matches = 0;
 let rating = 5;
@@ -31,9 +24,13 @@ const upClass = "up";
 const downClass = "down";
 const matchClass = "match";
 
-main();
+// start the game
+start_game();
 
-function main() {
+/**
+* @description Main function to start the game and add event listeners on page
+*/
+function start_game() {
   //get all symbols in an array
   let symbols = [ "fas fa-apple-alt", "fas fa-ambulance", "fas fa-atom", "fas fa-air-freshener",
   "fas fa-anchor", "fas fa-bicycle", "fas fa-basketball-ball", "fas fa-brain", "fas fa-apple-alt",
@@ -66,16 +63,22 @@ function main() {
   reset_button.addEventListener('click', game_reset);
 }
 
-// ####################### Functions ##########################################
+// ####################### Other needed Functions ##########################################
 
+/**
+* @description Game logic sits in this function e.g. set timer, flip up card, flip down card
+*/
 function game(evt) {
+  let card1 = evt.target;
+
+  // Set timer only first time
   if (!timerSet) {
     timerSet = 1;
     timer = setInterval(myTimer, 1000); // triggers myTimer() every 1 second
   }
-  let card1 = evt.target;
-  console.log(card1.nodeName);
-  // https://davidwalsh.name/event-delegate
+
+  // Learning: https://davidwalsh.name/event-delegate
+  // Proceed only if card is not up
   if ( !(card1.isUp) && (card1.nodeName === "LI") ) { // For event delegation, we used card1.nodeName
     // If there is no card in array openCards yet
     if ( openCards.length === 0 ) {
@@ -164,10 +167,14 @@ function game(evt) {
   }
 }
 
+// Timer's function, which increase counter every one second
 function myTimer() {
   seconds++;
 }
 
+/**
+* @description What to do when game is won
+*/
 function game_won() {
   // add event listener for close button
   let closeButton = document.querySelector(".close");
@@ -186,6 +193,9 @@ function game_won() {
   modal.style.display = "block";
 }
 
+/**
+* @description Constructs HTML to display on modal, when game is won
+*/
 function getScoresHtml() {
   let scores = "";
   let ratingHtml = document.querySelector("li.star-rating").innerHTML;
@@ -193,6 +203,9 @@ function getScoresHtml() {
   return scores;
 }
 
+/**
+* @description What to do if user clicks on play again
+*/
 function playAgain(evt) {
   // hide modal
   modal.style.display = "none";
@@ -207,13 +220,18 @@ function playAgain(evt) {
   game_reset();
 }
 
+/**
+* @description If user clicks on close modal after winning
+*/
 function closeModal() {
   // hide modal and show the game
   modal.style.display = "none";
 }
 
+/**
+* @description Rest game logic
+*/
 function game_reset(){
-
   // remove "match" class from matched cards to make them normal
   for ( let card of matchedCards )
   {
@@ -245,15 +263,20 @@ function game_reset(){
 
   // add shuffled cards in new order
   // add event listener on all cards and reset button
-  main();
+  start_game();
 }
 
+/**
+* @description Change the class of matched cards to show them differently
+*/
 function cardsMatched(card1, card2){
   card1.classList.add(matchClass);
   card2.classList.add(matchClass);
 }
 
-// flip the card up
+/**
+* @description Flip the card up
+*/
 function flipUp(card) {
   // add "up" class to card
   card.classList.add(upClass);
@@ -264,7 +287,9 @@ function flipUp(card) {
   card.isDown = 0;
 }
 
-// flip the card up
+/**
+* @description Flip the card down
+*/
 function flipDown(card) {
   // add "down" class to card
   card.classList.add(downClass);
@@ -275,6 +300,9 @@ function flipDown(card) {
   card.isUp = 0;
 }
 
+/**
+* @description Logic to check if cards are matched
+*/
 function doCardsMatch(card1, card2){
   // match the classname of card's child(<i>) element e.g. cards[0].firstElementChild.className
   const class1 = card1.firstElementChild.className;
@@ -320,6 +348,9 @@ function shuffle(array) {
     return array;
 }
 
+/**
+* @description Function to change star rating on page
+*/
 function update_rating(rating){
   let empty_stars_count;
   empty_stars_count = 5 - rating;
@@ -347,10 +378,16 @@ function update_rating(rating){
   }
 }
 
+/**
+* @description Update card matches on page
+*/
 function updateMatches(matches) {
   document.querySelector(".matches p").textContent = matches;
 }
 
+/**
+* @description Updates user's moves on page
+*/
 function updateMoves(moves) {
   document.querySelector(".moves p").textContent = moves;
 }
