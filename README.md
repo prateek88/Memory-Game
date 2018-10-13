@@ -7,7 +7,7 @@ You just need a _modern web browser_ to play this game.
 Download/Clone this projec to your local computer and open **index.html** using a Browser.
 
 Here is how the game page looks like initially:
-![initial game page](https://github.com/prateek88/Memory-Game/blob/master/images/page_background.jpg)
+![initial game page](https://github.com/prateek88/Memory-Game/blob/master/images/game_page.png)
 
 Here is when you make some moves and some matches:
 ![game in progress](https://github.com/prateek88/Memory-Game/blob/master/images/playing_game.png)
