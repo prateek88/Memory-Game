@@ -14,130 +14,211 @@ let matchedCards = [];
 let moves = 0;
 let matches = 0;
 let rating = 5;
+let cards;
+let reset_button;
+let modal;
+
+const STARS = 5;
+const emptyStarClass = "far";
+const fullStarClass = "fas";
 
 const upClass = "up";
 const downClass = "down";
 const matchClass = "match";
 
-//get all symbols in an array
-let symbols = [ "fas fa-apple-alt", "fas fa-ambulance", "fas fa-atom", "fas fa-air-freshener",
-"fas fa-anchor", "fas fa-bicycle", "fas fa-basketball-ball", "fas fa-brain", "fas fa-apple-alt",
-"fas fa-ambulance", "fas fa-atom", "fas fa-air-freshener",
-"fas fa-anchor", "fas fa-bicycle", "fas fa-basketball-ball", "fas fa-brain"];
+main();
 
-// Delete default card elements
-let cardDeck = document.querySelector('.cards');
-let deckChildNodes = cardDeck.childNodes;
+function main() {
+  //get all symbols in an array
+  let symbols = [ "fas fa-apple-alt", "fas fa-ambulance", "fas fa-atom", "fas fa-air-freshener",
+  "fas fa-anchor", "fas fa-bicycle", "fas fa-basketball-ball", "fas fa-brain", "fas fa-apple-alt",
+  "fas fa-ambulance", "fas fa-atom", "fas fa-air-freshener",
+  "fas fa-anchor", "fas fa-bicycle", "fas fa-basketball-ball", "fas fa-brain"];
 
-while (cardDeck.firstChild) {
-  cardDeck.removeChild(cardDeck.firstChild);
+  // Delete default card elements
+  let cardDeck = document.querySelector('.cards');
+  let deckChildNodes = cardDeck.childNodes;
+
+  while (cardDeck.firstChild) {
+    cardDeck.removeChild(cardDeck.firstChild);
+  }
+
+  // add shuffled cards in new order
+  symbols = shuffle(symbols);
+  let shuffledCards = createHTML(symbols);
+  cardDeck.insertAdjacentHTML('afterbegin', shuffledCards);
+
+  // add event listener on all cards
+  cards = document.querySelectorAll('.card');
+  for ( let card of cards )
+  {
+    // ToLearn: Event order:  https://www.quirksmode.org/js/events_order.html#link4
+    card.addEventListener('click', game);
+  }
+
+  // Add event listener on reset button
+  reset_button = document.querySelector('#reset-button');
+  reset_button.addEventListener('click', game_reset);
 }
-
-
-// add shuffled cards in new order
-symbols = shuffle(symbols);
-let shuffledCards = createHTML(symbols);
-cardDeck.insertAdjacentHTML('afterbegin', shuffledCards);
-
-// add event listener on all cards
-let cards = document.querySelectorAll('.card');
-for ( let card of cards )
-{
-  card.addEventListener('click', game);
-}
-
-// Add event listener on reset button
-let reset_button = document.querySelector('#reset-button');
-reset_button.addEventListener('click', game_reset);
 
 // ####################### Functions ##########################################
 
 function game(evt) {
 
   let card1 = evt.target;
+  console.log(card1.nodeName);
+  // https://davidwalsh.name/event-delegate
+  if ( !(card1.isUp) && (card1.nodeName === "LI") ) { // For event delegation, we used card1.nodeName
+    // If there is no card in array openCards yet
+    if ( openCards.length === 0 ) {
+      console.log("First card clicked");
 
-  // If all card are matched with their pair
-  if (matchedCards.length === 16)
-  {
-    // end the game and display greetings
-  }
+      // flip the card up
+      flipUp(card1);
 
-  // If there is no card in array openCards yet
-  if ( openCards.length === 0 ) {
-    console.log("First card clicked");
-
-    // flip the card up
-    flipUp(card1);
-
-    // push the card to openCards array
-    openCards.push(card1);
-  }
-
-  // If there is one card in openCards array
-  else if (openCards.length === 1 ) {
-    let card2 = openCards[0]; // card already opened
-
-    console.log("Second card clicked");
-
-    // flip up this card
-    flipUp(card1);
-
-    // Update the moves counter
-    moves += 1;
-    document.querySelector(".moves p").textContent = moves;
-
-    // TODO: what to do if same card clicked again
-    if ( card1 === card2 ){
-      console.log("Same card is clicked again");
+      // push the card to openCards array
+      openCards.push(card1);
     }
 
-    // if symbols on cards match
-    if ( doCardsMatch(card1, card2) === true ){
+    // If there is one card in openCards array
+    else if (openCards.length === 1 ) {
+      let card2 = openCards[0]; // card already opened
 
-      // push cards to the matchedCards array
-      matchedCards.push(card1);
-      matchedCards.push(card2);
+      console.log("Second card clicked");
 
-      // Change the style of cards to show that they are already matched
-      cardsMatched(card1, card2);
+      // flip up this card
+      flipUp(card1);
 
-      // Clear the openCards array
-      openCards.pop();
+      // Update the moves counter
+      moves += 1;
+      updateMoves(moves);
 
-      // update matches on screen and add new matches count to text of that element
-      matches += 1;
-      document.querySelector(".matches p").textContent = matches;
+      // if symbols on cards match
+      if ( doCardsMatch(card1, card2) === true ){
 
-      // Remove event listener on these cards
-      card1.removeEventListener('click', game);
-      card2.removeEventListener('click', game);
+        // push cards to the matchedCards array
+        matchedCards.push(card1);
+        matchedCards.push(card2);
 
+        // Change the style of cards to show that they are already matched
+        cardsMatched(card1, card2);
+
+        // Clear the openCards array
+        openCards.pop();
+
+        // update matches on screen and add new matches count to text of that element
+        matches += 1;
+        updateMatches(matches);
+
+        // update rating, increase rating by 1 if rating < 5
+        if ( rating < 5 ){
+          rating += 1;
+          update_rating(rating);
+        }
+
+        // Remove event listener on these cards
+        card1.removeEventListener('click', game);
+        card2.removeEventListener('click', game);
+
+      }
+      // If cards are not matched
+      else {
+        setTimeout( () => {
+          // flip down the cards again
+          flipDown(card1);
+          flipDown(card2);
+
+          // Clear the openCards array
+          openCards.pop();
+
+          // update rating, decrease rating by 1 if rating > 0
+          if ( rating > 0 ){
+            rating -= 1;
+            update_rating(rating);
+          }
+        }, 1000);
+      }
     }
-    // If cards are not matched
-    else {
+    console.log("open cards: ", openCards);
+    console.log("matched cards: ", matchedCards);
 
-      // flip down the cards again
-      flipDown(card1);
-      flipDown(card2);
-
-      // Clear the openCards array
-      openCards.pop();
+    // If all card are matched with their pair
+    if ( matchedCards.length === 16 )
+    {
+      // end the game and display greetings
+      game_won();
     }
   }
-  console.log("open cards: ", openCards);
-  console.log("matched cards: ", matchedCards);
+  else {
+    console.log("same card is clicked again");
+  }
+}
+
+function game_won() {
+  // add event listener for close button
+  let closeButton = document.querySelector(".close");
+  closeButton.addEventListener('click', closeModal);
+
+  // add event listener for play again button
+  let playButton = document.querySelector(".play_again");
+  playButton.addEventListener('click', playAgain);
+
+  // Add scores before playButton
+  scoresHtml = getScoresHtml();
+  playButton.insertAdjacentHTML('beforebegin', scoresHtml);
+
+  // display a modal with stats and greetings and with a "play again" button
+  modal = document.getElementById('myModal');
+  modal.style.display = "block";
+}
+
+function getScoresHtml() {
+  let scoresHtml = "";
+  scoresHtml += `<p>Moves: ${moves}</p><p>Matches: ${matches}</p><p>Rating: ${rating}`;
+  return scoresHtml;
+}
+
+function playAgain(evt) {
+  // hide modal
+  modal.style.display = "none";
+
+  // Restart game
+  game_reset(evt);
+}
+
+function closeModal() {
+  // hide modal and show the game
+  modal.style.display = "none";
 }
 
 function game_reset(evt){
+
+  // remove "match" class from matched cards to make them normal
+  for ( let card of matchedCards )
+  {
+    card.classList.remove(matchClass);
+  }
+
   // all cards down
+  for ( let card of cards )
+  {
+    flipDown(card);
+  }
 
-  // shuffle all cards
-
-  // add event listener on all cards
+  matches = 0;
+  moves = 0;
 
   // reset moves and matches to 0
+  updateMatches(matches);
+  updateMoves(moves);
 
   // reset ratings to 5 stars
+  rating = 5;
+  update_rating(rating);
+
+  // add shuffled cards in new order
+  // add event listener on all cards and reset button
+  main();
 }
 
 function cardsMatched(card1, card2){
@@ -153,6 +234,7 @@ function flipUp(card) {
   if (card.isDown === 1){
     card.classList.toggle(downClass);
   }
+  card.isDown = 0;
 }
 
 // flip the card up
@@ -163,6 +245,7 @@ function flipDown(card) {
   if (card.isUp === 1){
     card.classList.toggle(upClass);
   }
+  card.isUp = 0;
 }
 
 function doCardsMatch(card1, card2){
@@ -208,4 +291,39 @@ function shuffle(array) {
     }
 
     return array;
+}
+
+function update_rating(rating){
+  let empty_stars_count;
+  empty_stars_count = 5 - rating;
+
+  let all_stars = document.querySelectorAll(".star-rating i");
+
+  for (let i = 0; i < STARS - empty_stars_count; i++){
+    // change last n stars in html, where n = empty_stars_count
+
+    // class "fas" is for filled star and "far" is for empty star
+
+    // In last n elements, remove "fas" and add "far"
+    all_stars[i].classList.add(fullStarClass);
+    all_stars[i].classList.remove(emptyStarClass);
+  }
+
+  for (let i = STARS - empty_stars_count; i < STARS; i++){
+    // change last n stars in html, where n = empty_stars_count
+
+    // class "fas" is for filled star and "far" is for empty star
+
+    // In last n elements, remove "fas" and add "far"
+    all_stars[i].classList.add(emptyStarClass);
+    all_stars[i].classList.remove(fullStarClass);
+  }
+}
+
+function updateMatches(matches) {
+  document.querySelector(".matches p").textContent = matches;
+}
+
+function updateMoves(moves) {
+  document.querySelector(".moves p").textContent = moves;
 }
