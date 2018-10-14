@@ -15,8 +15,9 @@ let timeTaken;
 let timerSet = 0;
 let timer;
 let scoresHtml;
-let timerElement;
 let timerText;
+let timerElement = document.querySelector('.timer');
+let origTimerText = timerElement.textContent;
 
 const STARS = 5;
 const emptyStarClass = "far";
@@ -172,12 +173,12 @@ function game(evt) {
 // Timer's function, which increase counter every one second
 function myTimer() {
   seconds++;
+
   let hrs = Math.floor(seconds / (60 * 60));
   let mins = Math.floor((seconds % (60 * 60)) / 60);
   let secs = Math.floor( (seconds % (60 * 60)) % 60 );
   timerText = `${hrs}h ${mins}m ${secs}s`;
-  // display timer after star-rating
-  timerElement = document.querySelector('.timer');
+
   timerElement.textContent = timerText;
 }
 
@@ -270,7 +271,7 @@ function game_reset(){
   seconds = 0;
   timeTaken = 0;
   timerSet = 0;
-  timerElement.textContent = "";
+  timerElement.textContent = origTimerText;
 
   // add shuffled cards in new order
   // add event listener on all cards and reset button
