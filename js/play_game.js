@@ -153,7 +153,7 @@ function game(evt) {
           openCards.pop();
 
           // update rating, decrease rating by 1 if rating > 0
-          if ( rating > 0 ){
+          if ( rating > 1 ){
             rating -= 1;
             update_rating(rating);
           }
