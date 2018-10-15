@@ -2,24 +2,12 @@
   box-sizing: border-box;
 }
 
-html {
-
-}
-
 body {
   background-color: #afabd8;
 }
 
 .container {
   margin-top: 50px;
-}
-
-h1 {
-
-}
-
-section {
-
 }
 
 .data {
@@ -44,10 +32,6 @@ section {
 
 .star-rating {
   padding-bottom: 30px;
-}
-
-p {
-
 }
 
 #reset-button {
@@ -92,6 +76,10 @@ p {
 /* If card is a match, how to dispaly it */
 .card.match {
   opacity: 0.2;
+}
+
+.click-disabled {
+    pointer-events: none;
 }
 
 .modal {

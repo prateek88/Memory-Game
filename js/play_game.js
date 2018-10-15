@@ -2,20 +2,22 @@
 // ####################### Main Code ##########################################
 
 // global variables
-let openCards = []; // Any open card will be stored
-let matchedCards = []; // all matched cards
-let moves = 0;
-let matches = 0;
-let rating = 5;
-let cards;
-let reset_button;
-let modal;
-let seconds = 0;
-let timeTaken;
-let timerSet = 0;
-let timer;
-let scoresHtml;
-let timerText;
+let openCards = [], // Any open card will be stored
+matchedCards = [], // all matched cards
+moves = 0,
+matches = 0,
+rating = 5,
+cards,
+duplicateCards,
+reset_button,
+modal,
+seconds = 0,
+timeTaken,
+timerSet = 0,
+timer,
+scoresHtml,
+timerText;
+
 let timerElement = document.querySelector('.timer');
 let origTimerText = timerElement.textContent;
 
@@ -26,6 +28,7 @@ const fullStarClass = "fas";
 const upClass = "up";
 const downClass = "down";
 const matchClass = "match";
+const disableClickClass = "click-disabled";
 
 // start the game
 start_game();
@@ -34,15 +37,14 @@ start_game();
 * @description Main function to start the game and add event listeners on page
 */
 function start_game() {
-  //get all symbols in an array
-  let symbols = [ "fas fa-apple-alt", "fas fa-ambulance", "fas fa-atom", "fas fa-air-freshener",
-  "fas fa-anchor", "fas fa-bicycle", "fas fa-basketball-ball", "fas fa-brain", "fas fa-apple-alt",
-  "fas fa-ambulance", "fas fa-atom", "fas fa-air-freshener",
+  // Learning: SPread-syntax : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
+  // get all symbols in an array
+  let icons = [ "fas fa-apple-alt", "fas fa-ambulance", "fas fa-atom", "fas fa-air-freshener",
   "fas fa-anchor", "fas fa-bicycle", "fas fa-basketball-ball", "fas fa-brain"];
+  let symbols = [...icons, ...icons];
 
   // Delete default card elements
   let cardDeck = document.querySelector('.cards');
-  let deckChildNodes = cardDeck.childNodes;
 
   while (cardDeck.firstChild) {
     cardDeck.removeChild(cardDeck.firstChild);
@@ -98,10 +100,15 @@ function game(evt) {
     else if (openCards.length === 1 ) {
       let card2 = openCards[0]; // card already opened
 
-      console.log("Second card clicked");
+      console.log("Second card clicked:", card2);
 
       // flip up this card
       flipUp(card1);
+
+      for (let card of cards){
+        card.classList.add(disableClickClass);
+      }
+      console.log(cards);
 
       // Update the moves counter
       moves += 1;
@@ -155,6 +162,11 @@ function game(evt) {
     }
     console.log("open cards: ", openCards);
     console.log("matched cards: ", matchedCards);
+
+    // Enable click event on all cards
+    for (let card of cards){
+      card.classList.remove(disableClickClass);
+    }
 
     // If all card are matched with their pair
     if ( matchedCards.length === 16 )
