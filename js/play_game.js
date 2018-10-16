@@ -108,7 +108,7 @@ function game(evt) {
       for (let card of cards){
         card.classList.add(disableClickClass);
       }
-      console.log(cards);
+      // console.log(cards);
 
       // Update the moves counter
       moves += 1;
@@ -141,6 +141,13 @@ function game(evt) {
         card1.removeEventListener('click', game);
         card2.removeEventListener('click', game);
 
+        // Enable click event on all cards
+        setTimeout( () => {
+          for (let card of cards){
+            card.classList.remove(disableClickClass);
+          }
+        }, 100);
+
       }
       // If cards are not matched
       else {
@@ -157,16 +164,16 @@ function game(evt) {
             rating -= 1;
             update_rating(rating);
           }
+          // Enable click event on all cards
+          for (let card of cards){
+            card.classList.remove(disableClickClass);
+          }
+
         }, 1000);
       }
     }
     console.log("open cards: ", openCards);
     console.log("matched cards: ", matchedCards);
-
-    // Enable click event on all cards
-    for (let card of cards){
-      card.classList.remove(disableClickClass);
-    }
 
     // If all card are matched with their pair
     if ( matchedCards.length === 16 )
