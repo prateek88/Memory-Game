@@ -228,7 +228,7 @@ function game_won() {
 function getScoresHtml() {
   let scores = "";
   let ratingHtml = document.querySelector("li.star-rating").innerHTML;
-  scores += `<p class="remove">Moves: ${moves}</p><p class="remove">Matches: ${matches}</p><p class="remove">Rating:</p> ${ratingHtml} <p class="remove">Time Taken: ${timerText}</p>`;
+  scores += `<p class="remove">Moves: ${moves}</p><p class="remove">Matches: ${matches}</p><p class="remove">Rating:</p> <p class="remove">${ratingHtml}</p> <p class="remove">Time Taken: ${timerText}</p>`;
   return scores;
 }
 
@@ -239,14 +239,15 @@ function playAgain(evt) {
   // hide modal
   modal.style.display = "none";
 
-  // remove HTML added to Modal
-  // let modal = document.querySelector(".modal-content");
-  // let modalScores = document.querySelectorAll(".remove");
-  // for (let i in modalScores){
-  //   modal.removeChild(modalScores[i]);
-  // }
   // Restart game
   game_reset();
+
+  // remove HTML added to Modal
+  let modalContent = document.querySelector(".modal-content");
+  let removables = document.querySelectorAll(".remove");
+  for (let i = 0; i < removables.length; i++){
+    modalContent.removeChild(removables[i]);
+  }
 }
 
 /**
